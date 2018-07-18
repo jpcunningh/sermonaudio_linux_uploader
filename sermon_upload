@@ -1,12 +1,17 @@
 #!/bin/bash
 
-if [ -z "$1" || -z "$2" || -z "$3" ]; then
+if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
   echo "Usage: sermon_upload api-key sermonid filename"
 fi
 
 API_KEY=$1
 SERMON_ID=$2
-FILE=$3
+FILE="$3"
+
+if ! [ -e "$FILE" ]; then
+  echo Unable to open file: \"$FILE\"
+  exit
+fi
 
 REST_ENDPOINT="https://api.sermonaudio.com/v1/broadcaster/upload_audio"
 
@@ -20,4 +25,6 @@ curl -v -X POST --data-binary @- \
     -H "content-type: application/json" \
     $REST_ENDPOINT
 )
+
+echo
 
