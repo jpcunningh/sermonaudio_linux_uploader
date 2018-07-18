@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ -z "$1" || -z "$2" || -z "$3" ]; then
+  echo "Usage: sermon_upload api-key sermonid filename"
+fi
+
+API_KEY=$1
+SERMON_ID=$2
+FILE=$3
+
+REST_ENDPOINT="https://api.sermonaudio.com/v1/broadcaster/upload_audio"
+
+#  echo "{ \"sermonID\": $SERMON_ID, \"filename\": \"$FILE\", \"fileData\": \"$(base64 -w 0 "$FILE")\" }"
+
+#exit
+
+( echo "{ \"sermonID\": $SERMON_ID, \"filename\": \"$FILE\", \"fileData\": \"$(base64 -w 0 "$FILE")\" }" ) | (
+curl -v -X POST --data-binary @- \
+    -H "X-Api-Key: $API_KEY" \
+    -H "content-type: application/json" \
+    $REST_ENDPOINT
+)
+
