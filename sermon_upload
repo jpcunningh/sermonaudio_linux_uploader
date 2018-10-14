@@ -2,6 +2,7 @@
 
 if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
   echo "Usage: sermon_upload api-key sermonid filename"
+  exit
 fi
 
 API_KEY=$1
